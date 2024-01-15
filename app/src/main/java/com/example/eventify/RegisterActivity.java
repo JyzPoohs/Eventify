@@ -1,0 +1,76 @@
+package com.example.eventify;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
+public class RegisterActivity extends AppCompatActivity {
+    EditText signupEmail, signupPassword, confirmPassword;
+    TextView loginRedirectText;
+    Button signupButton;
+    FirebaseAuth firebaseAuth;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+
+        signupEmail = findViewById(R.id.signup_email);
+        signupPassword = findViewById(R.id.signup_password);
+        confirmPassword = findViewById(R.id.confirm_password);
+        loginRedirectText = findViewById(R.id.loginRedirectText);
+        signupButton = findViewById(R.id.signup_button);
+
+        signupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = signupEmail.getText().toString().trim();
+                String password = signupPassword.getText().toString().trim();
+                String confirm_password = confirmPassword.getText().toString().trim();
+
+                if (email.isEmpty() || password.isEmpty() || confirm_password.isEmpty()) {
+                    Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
+                } else {
+                    if (password.equals(confirm_password)) {
+                        // Register the user with Firebase
+                        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<AuthResult> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                    }
+                    else
+                        Toast.makeText(RegisterActivity.this, "The password is not matched", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        loginRedirectText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+}

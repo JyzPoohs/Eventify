@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Eventify</string>
+    <string name="eventify">Eventify</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="default_web_client_id">116821613216-l7j7sbgp8048g5fp5vccj7o0gsnd4iqr.apps.googleusercontent.com</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_event">Create Event</string>
+    <string name="view_invitations">View Invitations</string>
+</resources>
