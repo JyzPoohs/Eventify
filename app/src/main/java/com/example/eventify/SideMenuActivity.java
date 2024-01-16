@@ -40,6 +40,10 @@ public class SideMenuActivity extends AppCompatActivity {
                     Intent intent = new Intent(SideMenuActivity.this, ProfileActivity.class);
                     startActivity(intent);
                 }
+                else if (position == 1){
+                    Intent intent = new Intent(SideMenuActivity.this, CreateEventActivity.class);
+                    startActivity(intent);
+                }
             }
         });
     }

@@ -13,4 +13,10 @@
     <string name="view_invitations">View Invitations</string>
     <string name="contact">Contact</string>
     <string name="edit_profile">Edit Profile</string>
+
+    <string name="event_name">Event Name</string>
+    <string name="event_description">Event Description</string>
+    <string name="event_theme">Event Theme</string>
+    <string name="event_location">Event Location</string>
+    event_location
 </resources>
