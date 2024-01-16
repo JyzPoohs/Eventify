@@ -121,7 +121,7 @@
         app:layout_constraintVertical_bias="0.626" />
 
     <ImageView
-        android:id="@+id/tvtEventImage"
+        android:id="@+id/ivtEventImage"
         android:layout_width="306dp"
         android:layout_height="143dp"
         android:background="@android:color/darker_gray"
