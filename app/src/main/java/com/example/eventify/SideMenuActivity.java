@@ -9,11 +9,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class SideMenuActivity extends AppCompatActivity {
-    String sideMenuItem[] = {"Profile", "Create Event", "Visit Invitations", "Logout"};
-    int sideMenuIcon[] = {R.drawable.baseline_account_purple_24, R.drawable.baseline_calendar_month_24, R.drawable.baseline_mail_outline_24,R.drawable.baseline_logout_24};
+    String sideMenuItem[] = {"Home", "Profile", "Create Event", "Visit Invitations", "Logout"};
+    int sideMenuIcon[] = {R.drawable.baseline_home_24, R.drawable.baseline_account_purple_24, R.drawable.baseline_calendar_month_24, R.drawable.baseline_mail_outline_24, R.drawable.baseline_logout_24};
 
     ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,12 +39,22 @@ public class SideMenuActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0){
+                if (position == 0) {
+                    Intent intent = new Intent(SideMenuActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                } else if (position == 1) {
                     Intent intent = new Intent(SideMenuActivity.this, ProfileActivity.class);
                     startActivity(intent);
-                }
-                else if (position == 1){
+                } else if (position == 2) {
                     Intent intent = new Intent(SideMenuActivity.this, CreateEventActivity.class);
+                    startActivity(intent);
+                } else if (position == 3) {
+                    Intent intent = new Intent(SideMenuActivity.this, Invitation.class);
+                    startActivity(intent);
+                } else if (position == 4) {
+                    FirebaseAuth.getInstance().signOut();
+                    Intent intent = new Intent(SideMenuActivity.this, MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear back stack
                     startActivity(intent);
                 }
             }

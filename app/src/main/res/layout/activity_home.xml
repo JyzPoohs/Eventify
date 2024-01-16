@@ -16,7 +16,7 @@
         android:theme="?attr/actionBarTheme"
         app:navigationIcon="@drawable/baseline_side_menu_24"
         app:title="@string/eventify"
-        app:titleMarginStart="115dp"
+        app:titleMarginStart="112dp"
         app:titleTextColor="@android:color/white"
         tools:layout_editor_absoluteX="1dp"
         tools:layout_editor_absoluteY="1dp"/>

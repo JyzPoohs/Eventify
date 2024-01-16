@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -46,6 +47,15 @@ public class CreateEventActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_invitation);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNavigationIconClick();
+            }
+        });
 
         etEventName = findViewById(R.id.eventName);
         etEventDescription = findViewById(R.id.eventDescription);
@@ -203,6 +213,11 @@ public class CreateEventActivity extends AppCompatActivity {
 
         // Store the event in the database
         databaseReference.child("events").child(eventKey).child("imageUrl").setValue(event.getImageUrl());
+    }
+
+    private void onNavigationIconClick() {
+        Intent intent = new Intent(CreateEventActivity.this, SideMenuActivity.class);
+        startActivity(intent);
     }
 
 }

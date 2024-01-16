@@ -19,5 +19,10 @@
     <string name="event_theme">Event Theme</string>
     <string name="event_location">Event Location</string>
     <string name="username">Username</string>
+    <string name="create">Create</string>
+    <string name="photo">Photo</string>
+    <string name="date">Date</string>
+    <string name="datetime">DateTime</string>
+    <string name="profile">Profile</string>
     event_location
 </resources>
