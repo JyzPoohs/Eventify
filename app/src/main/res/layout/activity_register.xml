@@ -32,6 +32,19 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/signup_username"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border"
+                android:drawableLeft="@drawable/baseline_account_purple_small_24"
+                android:drawablePadding="8dp"
+                android:hint="@string/username"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:autofillHints="emailAddress"
+                android:textColor="@color/black" />
+            <EditText
                 android:id="@+id/signup_email"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
@@ -40,6 +53,19 @@
                 android:drawableLeft="@drawable/baseline_email_24"
                 android:drawablePadding="8dp"
                 android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:padding="8dp"
+                android:autofillHints="emailAddress"
+                android:textColor="@color/black" />
+            <EditText
+                android:id="@+id/signup_contact"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/border"
+                android:drawableLeft="@drawable/baseline_phone_24"
+                android:drawablePadding="8dp"
+                android:hint="@string/contact"
                 android:inputType="textEmailAddress"
                 android:padding="8dp"
                 android:autofillHints="emailAddress"

@@ -18,5 +18,6 @@
     <string name="event_description">Event Description</string>
     <string name="event_theme">Event Theme</string>
     <string name="event_location">Event Location</string>
+    <string name="username">Username</string>
     event_location
 </resources>

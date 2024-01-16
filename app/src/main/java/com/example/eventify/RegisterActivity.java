@@ -19,7 +19,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
-    EditText signupEmail, signupPassword, confirmPassword;
+    EditText signupUsername, signupEmail, signupContact, signupPassword, confirmPassword;
     TextView loginRedirectText;
     Button signupButton;
     FirebaseAuth firebaseAuth;
@@ -32,8 +32,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-
+        signupUsername = findViewById(R.id.signup_username);
         signupEmail = findViewById(R.id.signup_email);
+        signupContact = findViewById(R.id.signup_contact);
         signupPassword = findViewById(R.id.signup_password);
         confirmPassword = findViewById(R.id.confirm_password);
         loginRedirectText = findViewById(R.id.loginRedirectText);
@@ -42,11 +43,13 @@ public class RegisterActivity extends AppCompatActivity {
         signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String username = signupUsername.getText().toString().trim();
                 String email = signupEmail.getText().toString().trim();
+                String contact = signupContact.getText().toString().trim();
                 String password = signupPassword.getText().toString().trim();
                 String confirm_password = confirmPassword.getText().toString().trim();
 
-                if (email.isEmpty() || password.isEmpty() || confirm_password.isEmpty()) {
+                if (username.isEmpty() || contact.isEmpty() || email.isEmpty() || password.isEmpty() || confirm_password.isEmpty()) {
                     Toast.makeText(RegisterActivity.this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 } else {
                     if (password.equals(confirm_password)) {
@@ -59,7 +62,7 @@ public class RegisterActivity extends AppCompatActivity {
                                             if (firebaseAuth.getCurrentUser() != null) {
                                                 // Check if the user is not null before getting UID
                                                 String userId = firebaseAuth.getCurrentUser().getUid();
-                                                saveUserDataToDatabase(userId, email);
+                                                saveUserDataToDatabase(userId, email, username, contact);
                                             } else {
                                                 Toast.makeText(RegisterActivity.this, "User is null", Toast.LENGTH_SHORT).show();
                                             }
@@ -84,13 +87,15 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
-        private void saveUserDataToDatabase(String userId, String email) {
-            // Create a new child node for the user using their user ID
-            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
-            usersReference = firebaseDatabase.getReference("userinfo");
-            DatabaseReference userReference = usersReference.child(userId);
+    private void saveUserDataToDatabase(String userId, String email, String username, String contact) {
+        // Create a new child node for the user using their user ID
+        FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+        usersReference = firebaseDatabase.getReference("userinfo");
+        DatabaseReference userReference = usersReference.child(userId);
 
-            userReference.child("email").setValue(email);
-        }
+        userReference.child("email").setValue(email);
+        userReference.child("username").setValue(username);
+        userReference.child("contact").setValue(contact);
+    }
 
 }
