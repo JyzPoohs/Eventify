@@ -15,12 +15,15 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
     EditText signupEmail, signupPassword, confirmPassword;
     TextView loginRedirectText;
     Button signupButton;
     FirebaseAuth firebaseAuth;
+    DatabaseReference usersReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +31,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         firebaseAuth = FirebaseAuth.getInstance();
+
 
         signupEmail = findViewById(R.id.signup_email);
         signupPassword = findViewById(R.id.signup_password);
@@ -52,14 +56,20 @@ public class RegisterActivity extends AppCompatActivity {
                                     @Override
                                     public void onComplete(@NonNull Task<AuthResult> task) {
                                         if (task.isSuccessful()) {
+                                            if (firebaseAuth.getCurrentUser() != null) {
+                                                // Check if the user is not null before getting UID
+                                                String userId = firebaseAuth.getCurrentUser().getUid();
+                                                saveUserDataToDatabase(userId, email);
+                                            } else {
+                                                Toast.makeText(RegisterActivity.this, "User is null", Toast.LENGTH_SHORT).show();
+                                            }
                                             Toast.makeText(RegisterActivity.this, "Registration successful", Toast.LENGTH_SHORT).show();
                                         } else {
                                             Toast.makeText(RegisterActivity.this, "Registration failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                                         }
                                     }
                                 });
-                    }
-                    else
+                    } else
                         Toast.makeText(RegisterActivity.this, "The password is not matched", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -73,4 +83,14 @@ public class RegisterActivity extends AppCompatActivity {
             }
         });
     }
+
+        private void saveUserDataToDatabase(String userId, String email) {
+            // Create a new child node for the user using their user ID
+            FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+            usersReference = firebaseDatabase.getReference("userinfo");
+            DatabaseReference userReference = usersReference.child(userId);
+
+            userReference.child("email").setValue(email);
+        }
+
 }
