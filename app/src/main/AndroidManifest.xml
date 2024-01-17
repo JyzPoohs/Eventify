@@ -18,13 +18,16 @@
         android:theme="@style/Theme.Eventify"
         tools:targetApi="31">
         <activity
+            android:name=".EventUpdateActivity"
+            android:exported="false" />
+        <activity
             android:name=".EventListActivity"
             android:exported="false" />
         <activity
             android:name=".Invitation"
             android:exported="false" />
         <activity
-            android:name=".InvitationDetailActivity"
+            android:name=".EventDetailActivity"
             android:exported="false" />
         <activity
             android:name=".CreateEventActivity"

@@ -10,6 +10,7 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="sign_up">Sign Up</string>
     <string name="create_event">Create Event</string>
+    <string name="view_event">View Event</string>
     <string name="view_invitations">View Invitations</string>
     <string name="contact">Contact</string>
     <string name="edit_profile">Edit Profile</string>
@@ -22,7 +23,8 @@
     <string name="create">Create</string>
     <string name="photo">Photo</string>
     <string name="date">Date</string>
-    <string name="datetime">DateTime</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
     <string name="profile">Profile</string>
     event_location
 </resources>

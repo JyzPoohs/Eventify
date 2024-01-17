@@ -5,21 +5,24 @@ public class Event {
     private String eventKey;
     private String eventName;
     private String eventDescription;
-    private String eventTheme;
+    private String eventType;
     private String eventLocation;
-    private String eventDateTime;
+    private String eventStart;
+    private String eventEnd;
     private String imageUrl;
 
     public Event() {
     }
 
-    public Event(String userId, String eventName, String eventDescription, String eventTheme, String eventLocation, String eventDateTime) {
+    public Event(String eventKey, String userId, String eventName, String eventDescription, String eventType, String eventLocation, String eventStart, String eventEnd) {
         this.userId = userId;
+        this.eventKey = eventKey;
         this.eventName = eventName;
         this.eventDescription = eventDescription;
-        this.eventTheme = eventTheme;
+        this.eventType = eventType;
         this.eventLocation = eventLocation;
-        this.eventDateTime = eventDateTime;
+        this.eventStart = eventStart;
+        this.eventEnd = eventEnd;
     }
 
     public Event(String imageUrl) {
@@ -58,12 +61,12 @@ public class Event {
         this.eventDescription = eventDescription;
     }
 
-    public String getEventTheme() {
-        return eventTheme;
+    public String getEventType() {
+        return eventType;
     }
 
-    public void setEventTheme(String eventTheme) {
-        this.eventTheme = eventTheme;
+    public void setEventType(String eventType) {
+        this.eventType = eventType;
     }
 
     public String getEventLocation() {
@@ -74,12 +77,20 @@ public class Event {
         this.eventLocation = eventLocation;
     }
 
-    public String getEventDateTime() {
-        return eventDateTime;
+    public String getEventStart() {
+        return eventStart;
     }
 
-    public void setEventDateTime(String eventDateTime) {
-        this.eventDateTime = eventDateTime;
+    public void setEventStart(String eventStart) {
+        this.eventStart = eventStart;
+    }
+
+    public String getEventEnd() {
+        return eventEnd;
+    }
+
+    public void setEventEnd(String eventEnd) {
+        this.eventEnd = eventEnd;
     }
 
     public String getImageUrl() {

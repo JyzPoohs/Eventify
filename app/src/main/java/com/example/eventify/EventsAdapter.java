@@ -33,10 +33,26 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, final int position) {
-        final Event events=this.events.get(position);
-        holder.event_name_txt.setText(String.valueOf(events.getEventName()));
-        holder.event_datetime_txt.setText(String.valueOf(events.getEventDateTime()));
+        final Event event = this.events.get(position);
+        holder.event_name_txt.setText(String.valueOf(event.getEventName()));
+        holder.mainDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, EventDetailActivity.class);
+                intent.putExtra("EventKey",event.getEventKey());
+                intent.putExtra("EventName", event.getEventName());
+                intent.putExtra("Start", event.getEventStart());
+                intent.putExtra("End", event.getEventEnd());
+                intent.putExtra("EventDescription", event.getEventDescription());
+                intent.putExtra("EventLocation", event.getEventLocation());
+                intent.putExtra("ImageUrl", event.getImageUrl());
+                // Add more fields as needed
+                context.startActivity(intent);
+            }
+        });
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -44,12 +60,11 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView event_name_txt,event_datetime_txt;
+        TextView event_name_txt;
         public View mainDisplay;
         public MyViewHolder (@NonNull View itemView) {
             super(itemView);
             event_name_txt=itemView.findViewById(R.id.textViewEventName);
-            event_datetime_txt=itemView.findViewById(R.id.textViewEventDateTime);
 
             mainDisplay=itemView;
         }

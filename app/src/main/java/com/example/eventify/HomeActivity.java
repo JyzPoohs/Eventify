@@ -29,6 +29,16 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Code to navigate to another page (activity)
+                Intent intent = new Intent(HomeActivity.this, CreateEventActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        CardView viewEventLayout = findViewById(R.id.view_event_card);
+        viewEventLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Code to navigate to another page (activity)
                 Intent intent = new Intent(HomeActivity.this, EventListActivity.class);
                 startActivity(intent);
             }
