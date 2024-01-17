@@ -17,8 +17,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Eventify"
         tools:targetApi="31">
+
         <activity
             android:name=".SendFeedback"
+            android:exported="false" />
+        <activity
+            android:name=".EventListActivity"
             android:exported="false" />
         <activity
             android:name=".Invitation"

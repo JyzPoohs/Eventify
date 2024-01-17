@@ -29,7 +29,7 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 // Code to navigate to another page (activity)
-                Intent intent = new Intent(HomeActivity.this, CreateEventActivity.class);
+                Intent intent = new Intent(HomeActivity.this, EventListActivity.class);
                 startActivity(intent);
             }
         });

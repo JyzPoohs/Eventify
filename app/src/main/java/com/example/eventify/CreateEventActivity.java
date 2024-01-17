@@ -19,6 +19,7 @@ import android.widget.TimePicker;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -30,6 +31,7 @@ import java.util.Calendar;
 
 public class CreateEventActivity extends AppCompatActivity {
 
+    private FirebaseAuth firebaseAuth;
     private TextView dateTime;
     private EditText etEventName;
     private EditText etEventDescription;
@@ -57,6 +59,7 @@ public class CreateEventActivity extends AppCompatActivity {
             }
         });
 
+        firebaseAuth = FirebaseAuth.getInstance();
         etEventName = findViewById(R.id.eventName);
         etEventDescription = findViewById(R.id.eventDescription);
         etEventTheme = findViewById(R.id.eventTheme);
@@ -100,11 +103,14 @@ public class CreateEventActivity extends AppCompatActivity {
                 if (!eventName.isEmpty() && !eventDescription.isEmpty() && !eventTheme.isEmpty() &&
                         !eventLocation.isEmpty() && !eventDateTime.isEmpty()) {
 
+                    // Get the current user's UID
+                    String currentUserUid = firebaseAuth.getCurrentUser().getUid();
+
                     // Generate a unique key for the event
                     String eventKey = databaseReference.child("events").push().getKey();
 
                     // Store event data to Firebase Realtime Database
-                    storeEventData(eventKey, eventName, eventDescription, eventTheme, eventLocation, eventDateTime);
+                    storeEventData(eventKey, currentUserUid, eventName, eventDescription, eventTheme, eventLocation, eventDateTime);
 
                     // Capture the image as a Bitmap from ImageView
                     Bitmap imageBitmap = ((BitmapDrawable) imageLocation.getDrawable()).getBitmap();
@@ -112,11 +118,7 @@ public class CreateEventActivity extends AppCompatActivity {
                     // Upload the image to Firebase Storage
                     uploadImageToStorage(eventKey, imageBitmap);
 
-                    Intent intent = new Intent(CreateEventActivity.this,EventDetailActivity.class);
-                    startActivity(intent);
                 } else {
-                    // Display a message or handle incomplete data
-                    // You may show a Toast or set an error message on the UI
                 }
             }
         });
@@ -174,12 +176,12 @@ public class CreateEventActivity extends AppCompatActivity {
         }
     }
 
-    private void storeEventData(String eventKey, String eventName, String eventDescription, String eventTheme, String eventLocation, String eventDateTime) {
+    private void storeEventData(String eventKey, String userUid, String eventName, String eventDescription, String eventTheme, String eventLocation, String eventDateTime) {
         // Create an Event object
-        Event event = new Event(eventName, eventDescription, eventTheme, eventLocation, eventDateTime);
+        Event event = new Event(userUid, eventName, eventDescription, eventTheme, eventLocation, eventDateTime);
 
         // Store the event in the database
-        databaseReference.child("events").child(eventKey).setValue(event);
+        databaseReference.child(eventKey).setValue(event);
     }
 
     private void uploadImageToStorage(String eventKey, Bitmap bitmap) {
@@ -212,7 +214,7 @@ public class CreateEventActivity extends AppCompatActivity {
         Event event = new Event(imageUrl);
 
         // Store the event in the database
-        databaseReference.child("events").child(eventKey).child("imageUrl").setValue(event.getImageUrl());
+        databaseReference.child(eventKey).child("imageUrl").setValue(event.getImageUrl());
     }
 
     private void onNavigationIconClick() {
