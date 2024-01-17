@@ -21,6 +21,10 @@
             android:name=".EventUpdateActivity"
             android:exported="false" />
         <activity
+            android:name=".SendFeedback"
+
+            android:exported="false" />
+        <activity
             android:name=".EventListActivity"
             android:exported="false" />
         <activity
