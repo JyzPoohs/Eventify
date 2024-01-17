@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- item_feedback.xml -->
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginTop="10dp"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="20dp">
+
+    <!-- Add your feedback item layout here -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+        <!-- Example: TextViews for feedback information -->
+        <TextView
+            android:id="@+id/tvFeedbackTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Feedback Title"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/tvFeedbackDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Feedback Description" />
+
+        <!-- Add more TextViews or UI elements for other feedback details -->
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
