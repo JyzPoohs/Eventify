@@ -6,6 +6,7 @@ import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.view.WindowInsets;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
@@ -54,7 +55,7 @@ public class SideMenuActivity extends AppCompatActivity {
                 } else if (position == 4) {
                     Intent intent = new Intent(SideMenuActivity.this, Invitation.class);
                     startActivity(intent);
-                } else if (position == 5) {
+                } else if (position == 6) {
                     FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(SideMenuActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear back stack
