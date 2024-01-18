@@ -1,6 +1,7 @@
 package com.example.eventify;
 
 import android.content.Intent;
+import android.hardware.biometrics.BiometricManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +11,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -20,6 +22,9 @@ public class MainActivity extends AppCompatActivity {
     EditText loginUsername, loginPassword;
     Button loginButton;
     FirebaseAuth firebaseAuth;
+    BiometricPrompt biometricPrompt;
+    BiometricPrompt.PromptInfo promptInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
