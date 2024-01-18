@@ -7,10 +7,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import com.example.eventify.SideMenuActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -18,6 +18,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,9 @@ public class ProfileActivity extends AppCompatActivity {
     String[] profileItems = {};
     int[] profileIcons = {R.drawable.baseline_account_purple_small_24, R.drawable.baseline_mail_outline_24, R.drawable.baseline_phone_24};
     Button edit_profile_btn;
+    ImageView profilePic;
     DatabaseReference usersReference;
+    ProgressBar progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,8 @@ public class ProfileActivity extends AppCompatActivity {
         });
 
         edit_profile_btn = findViewById(R.id.profile_edit_btn);
+        progressBar = findViewById(R.id.profile_progress_bar);
+        profilePic = findViewById(R.id.profileImageView);
 
         edit_profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +62,7 @@ public class ProfileActivity extends AppCompatActivity {
         // Fetch user data from Realtime Database
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         if (currentUser != null) {
+            setInProgress(true);
             String userId = currentUser.getUid();
             ArrayList<String> profileItemsList = new ArrayList<>();
             usersReference = FirebaseDatabase.getInstance().getReference("userinfo").child(userId);
@@ -67,6 +73,13 @@ public class ProfileActivity extends AppCompatActivity {
                         String userEmail = dataSnapshot.child("email").getValue(String.class);
                         String usernameText = dataSnapshot.child("username").getValue(String.class);
                         String contactText = dataSnapshot.child("contact").getValue(String.class);
+                        String profilePictureUri = dataSnapshot.child("profile_picture").getValue(String.class);
+
+                        if (profilePictureUri != null && !profilePictureUri.isEmpty()) {
+                            Picasso.get().load(profilePictureUri).into(profilePic);
+                        }else
+                            Picasso.get().load(R.drawable.logo).into(profilePic);
+
 
                         profileItemsList.add(usernameText);
                         profileItemsList.add(userEmail);
@@ -76,6 +89,8 @@ public class ProfileActivity extends AppCompatActivity {
                         profileItems = profileItemsList.toArray(new String[0]);
                         CustomBaseAdapter customBaseAdapter = new CustomBaseAdapter(getApplicationContext(), profileItems, profileIcons);
                         profileListView.setAdapter(customBaseAdapter);
+
+                        setInProgress(false);
                     }
                 }
 
@@ -92,5 +107,13 @@ public class ProfileActivity extends AppCompatActivity {
     private void onNavigationIconClick() {
         Intent intent = new Intent(ProfileActivity.this, SideMenuActivity.class);
         startActivity(intent);
+    }
+
+    void setInProgress(boolean inProgress) {
+        if (inProgress) {
+            progressBar.setVisibility(View.VISIBLE);
+        } else {
+            progressBar.setVisibility(View.GONE);
+        }
     }
 }

@@ -45,6 +45,15 @@
                 android:textSize="36sp"
                 android:textStyle="bold" />
 
+            <ImageView
+                android:id="@+id/editProfileImageView"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginVertical="15dp"
+                android:contentDescription="@string/profile"
+                android:src="@drawable/logo" />
+
             <EditText
                 android:id="@+id/edit_username"
                 android:layout_width="match_parent"
