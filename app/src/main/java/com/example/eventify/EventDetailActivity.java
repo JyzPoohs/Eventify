@@ -96,6 +96,18 @@ public class EventDetailActivity extends AppCompatActivity {
                     .into(ivEventImage);
         }
 
+        btnInvite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent InviteIntent = new Intent(EventDetailActivity.this, Invitation.class);
+                InviteIntent.putExtra("EventKey", id);
+
+
+                // Start EditEventActivity
+                startActivity(InviteIntent);
+            }
+        });
+
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

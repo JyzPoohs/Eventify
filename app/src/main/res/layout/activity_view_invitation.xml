@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Invitation">
-
+    tools:context=".ViewInvitation">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -21,55 +20,31 @@
         app:layout_constraintVertical_bias="0.0"
         app:navigationIcon="@drawable/baseline_side_menu_24"
         app:title="@string/eventify"
-        app:titleMarginStart="112dp"
+        app:titleMarginStart="115dp"
         app:titleTextColor="@android:color/white" />
-
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="114dp"
-        android:layout_height="38dp"
-        android:text="Invite Guest"
+        android:layout_width="142dp"
+        android:layout_height="31dp"
+        android:text="View Invitation"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.053"
+        app:layout_constraintHorizontal_bias="0.054"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.125" />
+        app:layout_constraintVertical_bias="0.103" />
 
-
-    <androidx.cardview.widget.CardView
-        android:layout_width="350dp"
-        android:layout_height="419dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="381dp"
+        android:layout_height="630dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-
-        <ListView
-            android:id="@+id/UserList"
-            android:layout_width="318dp"
-            android:layout_height="373dp"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="5dp" />
-    </androidx.cardview.widget.CardView>
-
-
-    <Button
-        android:id="@+id/AddBtn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Guest"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.891" />
-
+        app:layout_constraintVertical_bias="0.625" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
