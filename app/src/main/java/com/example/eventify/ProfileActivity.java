@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,6 +28,7 @@ public class ProfileActivity extends AppCompatActivity {
     String[] profileItems = {};
     int[] profileIcons = {R.drawable.baseline_account_purple_small_24, R.drawable.baseline_mail_outline_24, R.drawable.baseline_phone_24};
     Button edit_profile_btn;
+    TextView change_pwd_btn;
     ImageView profilePic;
     DatabaseReference usersReference;
     ProgressBar progressBar;
@@ -48,6 +50,15 @@ public class ProfileActivity extends AppCompatActivity {
         edit_profile_btn = findViewById(R.id.profile_edit_btn);
         progressBar = findViewById(R.id.profile_progress_bar);
         profilePic = findViewById(R.id.profileImageView);
+        change_pwd_btn = findViewById(R.id.change_pwd_btn);
+
+        change_pwd_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfileActivity.this, FingerprintActivity.class);
+                startActivity(intent);
+            }
+        });
 
         edit_profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,9 +88,9 @@ public class ProfileActivity extends AppCompatActivity {
 
                         if (profilePictureUri != null && !profilePictureUri.isEmpty()) {
                             Picasso.get().load(profilePictureUri).into(profilePic);
-                        }else
-                            Picasso.get().load(R.drawable.logo).into(profilePic);
-
+                        } else {
+                            Picasso.get().load(R.drawable.baseline_account_purple_24).into(profilePic);
+                        }
 
                         profileItemsList.add(usernameText);
                         profileItemsList.add(userEmail);
@@ -100,8 +111,6 @@ public class ProfileActivity extends AppCompatActivity {
                 }
             });
         }
-
-
     }
 
     private void onNavigationIconClick() {
