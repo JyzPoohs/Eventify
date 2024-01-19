@@ -95,7 +95,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_weight="1"
                 android:contentDescription="@string/create_event"
-                app:srcCompat="@drawable/baseline_calendar_month_24" />
+                app:srcCompat="@drawable/baseline_event_80" />
 
 
         </LinearLayout>
