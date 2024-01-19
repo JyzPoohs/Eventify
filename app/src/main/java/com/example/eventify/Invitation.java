@@ -145,7 +145,6 @@ public class Invitation extends AppCompatActivity {
     }
 
     private void addGuestsToEvent(List<User> guestUsers) {
-        // Get the event ID from the intent
         String eventId = getIntent().getStringExtra("EventKey");
         DatabaseReference invitationsReference = FirebaseDatabase.getInstance().getReference("invitations");
 
@@ -155,8 +154,21 @@ public class Invitation extends AppCompatActivity {
         // Create a map to store invitation details
         Map<String, Object> invitationMap = new HashMap<>();
         invitationMap.put("eventId", eventId);
-        invitationMap.put("guestUsers", guestUsers);
-        // Set the invitation details under the unique invitation ID
+
+        // Create a map to store user details under "guest" node
+        Map<String, Object> guestsMap = new HashMap<>();
+
+        // Iterate through the guestUsers list
+        for (User user : guestUsers) {
+            String userId = user.getUserId();
+            Map<String, Object> userMap = new HashMap<>();
+            userMap.put("userName", user.getUserName());
+            userMap.put("eventId", eventId);
+
+            guestsMap.put(userId, userMap);
+        }
+
+        invitationMap.put("guests", guestsMap);
         invitationsReference.child(invitationId).setValue(invitationMap)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
@@ -165,7 +177,6 @@ public class Invitation extends AppCompatActivity {
                         Toast.makeText(Invitation.this, "Failed to send invitation: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
-
         Log.d("Invitation", "Event ID: " + eventId);
 
         if (eventId != null) {
