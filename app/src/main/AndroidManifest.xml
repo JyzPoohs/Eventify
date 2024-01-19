@@ -3,9 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-feature android:name="android.hardware.camera" />
-
+    <uses-feature android:name="android.hardware.telephony"/>
+    <uses-feature android:name="android.hardware.microphone"/>
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -17,6 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Eventify"
         tools:targetApi="31">
+        <activity
+            android:name=".MessageDashboard"
+            android:exported="false" />
         <activity
             android:name=".ListOfGuest"
             android:exported="false" />
@@ -50,6 +57,11 @@
         <activity
             android:name=".SideMenuActivity"
             android:exported="false" />
+        <activity
+            android:name=".SendMessage"
+            android:exported="false" />
+        <activity android:name=".EditMessage"
+        android:exported="false" />
         <activity
             android:name=".HomeActivity"
             android:exported="false" />

@@ -1,6 +1,7 @@
 package com.example.eventify;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,9 +18,27 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
     private Context context;
     private ArrayList<Participants> participants;
 
-    public ParticipantAdapter(Context context, ArrayList<Participants> p) {
+    // Additional fields for eventKey and guestKey
+    private String eventKey;
+    private String guestKey;
+
+    // Listener for item click
+    private ParticipantClickListener clickListener;
+
+    public ParticipantAdapter(Context context, String eventKey, ArrayList<Participants> p) {
         this.context = context;
+        this.eventKey = eventKey;
         this.participants = p;
+    }
+
+    // Define a listener interface
+    public interface ParticipantClickListener {
+        void onParticipantClicked(String eventKey, String guestKey, String userID, String username, String contactNumber);
+    }
+
+    // Set the listener
+    public void setClickListener(ParticipantClickListener listener) {
+        this.clickListener = listener;
     }
 
     @NonNull
@@ -40,8 +59,15 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
             holder.Message.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    Intent intent = new Intent(context, MessageDashboard.class);
+                    intent.putExtra("EventKey", eventKey);
+                    intent.putExtra("GuestKey", participant.getGuestKey());
+                    intent.putExtra("UserID", participant.getUserID());
+                    intent.putExtra("Username", participant.getUsername());
+                    intent.putExtra("Contact", participant.getContactNumber());
+                    context.startActivity(intent);
+                    }
 
-                }
             });
             // Add onClickListener for Delete button
             holder.Delete.setOnClickListener(new View.OnClickListener() {
@@ -53,27 +79,26 @@ public class ParticipantAdapter extends RecyclerView.Adapter<ParticipantAdapter.
         } else {
             Log.w("ParticipantAdapter", "participants list is null or position out of bounds");
         }
-
-
     }
 
     @Override
     public int getItemCount() {
         return participants.size();
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView Username, ContactNumber;
         ImageButton Delete, Message;
 
         public View mainDisplay;
+
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             Username = itemView.findViewById(R.id.Username);
             Delete = itemView.findViewById(R.id.deleteButton);
             Message = itemView.findViewById(R.id.messagebtn);
             ContactNumber = itemView.findViewById(R.id.ContactNum);
-            mainDisplay=itemView;
-
+            mainDisplay = itemView;
         }
     }
 }

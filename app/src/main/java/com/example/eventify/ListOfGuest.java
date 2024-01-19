@@ -29,6 +29,8 @@ public class ListOfGuest extends AppCompatActivity {
     ArrayList<Participants> participants;
     DatabaseReference GuestReference;
 
+    String eventKey; // Assuming you have eventKey as a class variable
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,10 +48,9 @@ public class ListOfGuest extends AppCompatActivity {
         GuestList = findViewById(R.id.GuestList);
         GuestList.setLayoutManager(new LinearLayoutManager(ListOfGuest.this));
 
-        String id = getIntent().getStringExtra("EventKey");
-        Log.d("FirebaseData", "EventKey" + id);
+        eventKey = getIntent().getStringExtra("EventKey"); // Assuming you pass EventKey in the intent
 
-        GuestReference = FirebaseDatabase.getInstance().getReference().child("events").child(id).child("guests");
+        GuestReference = FirebaseDatabase.getInstance().getReference().child("events").child(eventKey).child("guests");
 
         // Initialize the adapter once in onCreate
         participants = new ArrayList<>();
@@ -57,26 +58,23 @@ public class ListOfGuest extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 participants = new ArrayList<>();
-                participantAdapter = new ParticipantAdapter(ListOfGuest.this, participants);
+                participantAdapter = new ParticipantAdapter(ListOfGuest.this, eventKey, participants);
                 GuestList.setAdapter(participantAdapter);
                 for (DataSnapshot guestSnapshot : dataSnapshot.getChildren()) {
                     String guestKey = guestSnapshot.getKey();
+                    String userID = guestSnapshot.child("userId").getValue(String.class);
                     String contactNumber = guestSnapshot.child("contact").getValue(String.class);
                     String username = guestSnapshot.child("username").getValue(String.class);
-
-                    Participants participant = new Participants(username, contactNumber);
+                    Participants participant = new Participants(username,eventKey,userID,guestKey,contactNumber);
                     participants.add(participant);
                 }
-
                 Log.d("FirebaseData", "Participants size: " + participants.size());
                 if (!participants.isEmpty()) {
                     // Set the adapter and notify data changes
-                    participantAdapter = new ParticipantAdapter(ListOfGuest.this, participants);
+                    participantAdapter = new ParticipantAdapter(ListOfGuest.this, eventKey, participants);
                     GuestList.setAdapter(participantAdapter);
                     participantAdapter.notifyDataSetChanged();
                 }
-
-
             }
 
             @Override

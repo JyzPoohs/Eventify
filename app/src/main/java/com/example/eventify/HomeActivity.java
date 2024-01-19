@@ -24,7 +24,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        CardView createEventLayout = findViewById(R.id.create_event_card);
+        CardView createEventLayout = findViewById(R.id.send_message_btn);
         createEventLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
