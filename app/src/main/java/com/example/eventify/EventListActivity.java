@@ -71,7 +71,6 @@ public class EventListActivity extends AppCompatActivity {
         });
 
     }
-
     private void onNavigationIconClick() {
         Intent intent = new Intent(EventListActivity.this, SideMenuActivity.class);
         startActivity(intent);

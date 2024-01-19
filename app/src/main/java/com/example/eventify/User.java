@@ -6,12 +6,7 @@ public class User {
     private String contactNum;
     private String email;
 
-    private boolean selected;
 
-    public User(String userName) {
-        this.userName = userName;
-        this.selected = false;
-    }
     public String getUserId() {
         return userId;
     }
@@ -20,13 +15,11 @@ public class User {
         return userName;
     }
 
-    public User(String userId, String userName, String contactNum, String email) {
+    public User(String userId, String userName,String contactNum) {
         this.userId = userId;
         this.userName = userName;
-        this.contactNum = contactNum;
-        this.email = email;
+        this.contactNum= contactNum;
     }
-
     public String getContactNum() {
         return contactNum;
     }
@@ -51,11 +44,4 @@ public class User {
         this.email = email;
     }
 
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
 }

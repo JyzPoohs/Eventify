@@ -127,6 +127,14 @@ public class EventDetailActivity extends AppCompatActivity {
             }
         });
 
+        btnViewParticipant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent participantIntent=new Intent(EventDetailActivity.this,ListOfGuest.class);
+                participantIntent.putExtra("EventKey", id);
+                startActivity(participantIntent);
+            }
+        });
 
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
