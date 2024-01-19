@@ -14,7 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 public class SideMenuActivity extends AppCompatActivity {
     String sideMenuItem[] = {"Home", "Profile", "Create Event", "View Event", "Visit Invitations", "Logout"};
-    int sideMenuIcon[] = {R.drawable.baseline_home_24, R.drawable.baseline_account_purple_24, R.drawable.baseline_calendar_month_24, R.drawable.baseline_calendar_month_24, R.drawable.baseline_mail_outline_24, R.drawable.baseline_logout_24};
+    int sideMenuIcon[] = {R.drawable.baseline_home_24, R.drawable.baseline_account_purple_24, R.drawable.baseline_calendar_month_24, R.drawable.baseline_event_24, R.drawable.baseline_mail_outline_24, R.drawable.baseline_logout_24};
 
     ListView listView;
 
@@ -55,7 +55,7 @@ public class SideMenuActivity extends AppCompatActivity {
                 } else if (position == 4) {
                     Intent intent = new Intent(SideMenuActivity.this, Invitation.class);
                     startActivity(intent);
-                } else if (position == 6) {
+                } else if (position == 5) {
                     FirebaseAuth.getInstance().signOut();
                     Intent intent = new Intent(SideMenuActivity.this, MainActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK); // Clear back stack

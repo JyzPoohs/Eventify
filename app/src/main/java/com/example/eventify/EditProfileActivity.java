@@ -79,7 +79,7 @@ public class EditProfileActivity extends AppCompatActivity {
                         if (profilePictureUri != null && !profilePictureUri.isEmpty()) {
                             Picasso.get().load(profilePictureUri).into(profilePic);
                         }else
-                            Picasso.get().load(R.drawable.logo).into(profilePic);
+                            profilePic.setImageResource(R.drawable.baseline_account_purple_24);
 
                     }
                 }

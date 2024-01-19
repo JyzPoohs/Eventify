@@ -25,13 +25,11 @@
             android:name=".MessageDashboard"
             android:exported="false" />
         <activity
-            android:name=".ListOfGuest"
-            android:exported="false" />
-        <activity
             android:name=".EventUpdateActivity"
             android:exported="false" />
         <activity
             android:name=".SendFeedback"
+
             android:exported="false" />
         <activity
             android:name=".EventListActivity"
@@ -64,6 +62,12 @@
         android:exported="false" />
         <activity
             android:name=".HomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FingerprintActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChangePasswordActivity"
             android:exported="false" />
         <activity
             android:name=".RegisterActivity"
