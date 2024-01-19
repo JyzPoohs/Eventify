@@ -18,11 +18,13 @@
         android:theme="@style/Theme.Eventify"
         tools:targetApi="31">
         <activity
+            android:name=".MyViewHolder"
+            android:exported="false" />
+        <activity
             android:name=".EventUpdateActivity"
             android:exported="false" />
         <activity
             android:name=".SendFeedback"
-
             android:exported="false" />
         <activity
             android:name=".EventListActivity"
