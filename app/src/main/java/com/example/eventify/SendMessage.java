@@ -123,7 +123,7 @@ public class SendMessage extends AppCompatActivity {
 
                     // Upload audio file to Firebase Storage
                     uploadAudioFile(guestKey, userId, eventId);
-
+                    Toast.makeText(SendMessage.this, "Text & Voice Text Sent successfully", Toast.LENGTH_SHORT).show();
                     // Add any additional logic or error handling as needed
                 } else {
                     Toast.makeText(SendMessage.this, "Message cannot be empty", Toast.LENGTH_SHORT).show();

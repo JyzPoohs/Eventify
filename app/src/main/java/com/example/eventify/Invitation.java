@@ -23,6 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -148,52 +149,73 @@ public class Invitation extends AppCompatActivity {
         String eventId = getIntent().getStringExtra("EventKey");
         DatabaseReference invitationsReference = FirebaseDatabase.getInstance().getReference("invitations");
 
-        // Generate a unique key for the new invitation
-        String invitationId = invitationsReference.push().getKey();
+        Query query = invitationsReference.orderByChild("eventID").equalTo(eventId);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                String invitationId;
 
-        // Create a map to store invitation details
-        Map<String, Object> invitationMap = new HashMap<>();
-        invitationMap.put("eventId", eventId);
+                if (dataSnapshot.exists()) {
+                    // Use the existing invitation key
+                    invitationId = dataSnapshot.getChildren().iterator().next().getKey();
+                } else {
+                    // Generate a unique key for the new invitation
+                    invitationId = eventId; // Use event ID as invitation key
+                }
 
-        // Create a map to store user details under "guest" node
-        Map<String, Object> guestsMap = new HashMap<>();
+                // Create a map to store invitation details
+                Map<String, Object> invitationMap = new HashMap<>();
+                invitationMap.put("eventId", eventId);
 
-        // Iterate through the guestUsers list
-        for (User user : guestUsers) {
-            String userId = user.getUserId();
-            Map<String, Object> userMap = new HashMap<>();
-            userMap.put("userName", user.getUserName());
-            userMap.put("eventId", eventId);
+                // Create a map to store user details under "guest" node
+                Map<String, Object> guestsMap = new HashMap<>();
 
-            guestsMap.put(userId, userMap);
-        }
+                // Iterate through the guestUsers list
+                for (User user : guestUsers) {
+                    String userId = user.getUserId();
+                    Map<String, Object> userMap = new HashMap<>();
+                    userMap.put("userName", user.getUserName());
+                    userMap.put("eventId", eventId);
 
-        invitationMap.put("guests", guestsMap);
-        invitationsReference.child(invitationId).setValue(invitationMap)
-                .addOnCompleteListener(task -> {
-                    if (task.isSuccessful()) {
-                        Toast.makeText(Invitation.this, "Invitation sent successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        Toast.makeText(Invitation.this, "Failed to send invitation: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
+                    guestsMap.put(userId, userMap);
+                }
+
+                invitationMap.put("guests", guestsMap);
+                invitationsReference.child(invitationId).setValue(invitationMap)
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(Invitation.this, "Invitation sent successfully", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(Invitation.this, "Failed to send invitation: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                // Handle error
+                Toast.makeText(Invitation.this, "Error checking for existing invitation: " + databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         Log.d("Invitation", "Event ID: " + eventId);
 
         if (eventId != null) {
             // Get a reference to the event node in the database
             DatabaseReference eventReference = FirebaseDatabase.getInstance().getReference("events").child(eventId).child("guests");
-
+            query = eventReference.orderByChild("eventID").equalTo(eventId);
             for (User guestUser : guestUsers) {
                 Map<String, Object> guestInfo = new HashMap<>();
                 guestInfo.put("userId", guestUser.getUserId());
                 guestInfo.put("username", guestUser.getUserName());
                 guestInfo.put("contact", guestUser.getContactNum());
-                String guestKey = eventReference.push().getKey();
-                eventReference.child(guestKey).setValue(guestInfo);
+                eventReference.child(guestUser.getUserId()).setValue(guestInfo);
             }
         }
         else{
             Toast.makeText(Invitation.this, "Event ID not found", Toast.LENGTH_SHORT).show();
         }
     }
+
+
 }

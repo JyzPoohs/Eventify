@@ -179,7 +179,7 @@ public class EditMessage extends AppCompatActivity {
 
                 // Update the text message in the events database
                 DatabaseReference newTextMessageRef = FirebaseDatabase.getInstance().getReference()
-                        .child("events").child(eventId).child("guests").child(guestKey).child("message");
+                        .child("events").child(eventId).child("guests").child(userId).child("message");
 
                 newTextMessageRef.setValue(newText)
                         .addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -207,6 +207,7 @@ public class EditMessage extends AppCompatActivity {
                             currentGuestRef.child("message").setValue(newText);
                             break;
                         }
+                        Toast.makeText(EditMessage.this, "Text & Voice Text Updated successfully", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
