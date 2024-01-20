@@ -28,6 +28,9 @@
             android:name=".ListOfGuest"
             android:exported="false" />
         <activity
+            android:name=".MyViewHolder"
+            android:exported="false" />
+        <activity
             android:name=".EventUpdateActivity"
             android:exported="false" />
         <activity

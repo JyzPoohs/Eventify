@@ -28,5 +28,6 @@
     <string name="end_date">End Date</string>
     <string name="profile">Profile</string>
     <string name="change_password">Change Password</string>
+    <string name="delete_account">Delete Account</string>
     event_location
 </resources>

@@ -1,17 +1,23 @@
 package com.example.eventify;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -27,7 +33,7 @@ public class ProfileActivity extends AppCompatActivity {
 
     String[] profileItems = {};
     int[] profileIcons = {R.drawable.baseline_account_purple_small_24, R.drawable.baseline_mail_outline_24, R.drawable.baseline_phone_24};
-    Button edit_profile_btn;
+    Button edit_profile_btn, delete_profile_btn;
     TextView change_pwd_btn;
     ImageView profilePic;
     DatabaseReference usersReference;
@@ -51,6 +57,7 @@ public class ProfileActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.profile_progress_bar);
         profilePic = findViewById(R.id.profileImageView);
         change_pwd_btn = findViewById(R.id.change_pwd_btn);
+        delete_profile_btn = findViewById(R.id.profile_delete_btn);
 
         change_pwd_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,6 +74,35 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        delete_profile_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Display a confirmation dialog
+                AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
+                builder.setTitle("Confirm Delete");
+                builder.setMessage("Are you sure you want to delete your account? This action is irreversible.");
+
+                builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User confirmed, delete the account
+                        deleteAccount();
+                    }
+                });
+
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // User canceled, do nothing
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+        });
+
 
         ListView profileListView = findViewById(R.id.profileListView);
 
@@ -89,7 +125,7 @@ public class ProfileActivity extends AppCompatActivity {
                         if (profilePictureUri != null && !profilePictureUri.isEmpty()) {
                             Picasso.get().load(profilePictureUri).into(profilePic);
                         } else {
-                            Picasso.get().load(R.drawable.baseline_account_purple_24).into(profilePic);
+                            profilePic.setImageResource(R.drawable.baseline_account_purple_24);
                         }
 
                         profileItemsList.add(usernameText);
@@ -117,6 +153,36 @@ public class ProfileActivity extends AppCompatActivity {
         Intent intent = new Intent(ProfileActivity.this, SideMenuActivity.class);
         startActivity(intent);
     }
+
+    private void deleteAccount() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user != null) {
+            // Delete the user account
+            user.delete()
+                    .addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                // Account deleted successfully
+                                // Now, also remove the user data from the database
+                                usersReference.removeValue();
+
+                                Toast.makeText(ProfileActivity.this, "Account deleted successfully", Toast.LENGTH_SHORT).show();
+                                // Navigate to the login screen or any other desired screen
+                                Intent intent = new Intent(ProfileActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                // If the deletion fails, display a message to the user
+                                Toast.makeText(ProfileActivity.this, "Failed to delete account: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+        }
+    }
+
+
 
     void setInProgress(boolean inProgress) {
         if (inProgress) {
