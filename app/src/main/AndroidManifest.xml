@@ -25,6 +25,9 @@
             android:name=".MessageDashboard"
             android:exported="false" />
         <activity
+            android:name=".ListOfGuest"
+            android:exported="false" />
+        <activity
             android:name=".EventUpdateActivity"
             android:exported="false" />
         <activity
