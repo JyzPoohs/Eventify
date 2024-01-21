@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity implements MyAdapter.OnItemC
                 break;
             case 2:
                 // Code to navigate to EventListActivity
-                Intent viewInvitationsIntent = new Intent(HomeActivity.this, Invitation.class);
+                Intent viewInvitationsIntent = new Intent(HomeActivity.this, InvitationList.class);
                 startActivity(viewInvitationsIntent);
                 break;
         }

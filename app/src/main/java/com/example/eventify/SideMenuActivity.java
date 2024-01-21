@@ -55,7 +55,7 @@ public class SideMenuActivity extends AppCompatActivity {
                     Intent intent = new Intent(SideMenuActivity.this, EventListActivity.class);
                     startActivity(intent);
                 } else if (position == 4) {
-                    Intent intent = new Intent(SideMenuActivity.this, Invitation.class);
+                    Intent intent = new Intent(SideMenuActivity.this, InvitationList.class);
                     startActivity(intent);
                 } else if (position == 5) {
                     logout();

@@ -96,26 +96,12 @@ public class SendMessage extends AppCompatActivity {
 
                 if (!message.isEmpty()) {
                     // Update 'invitations' node
-                    DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations");
-                    invitationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                String guestKeyFromSnapshot = childSnapshot.getKey();
-                                DatabaseReference currentGuestRef = invitationsRef.child(guestKeyFromSnapshot).child("guests").child(userId);
-                                currentGuestRef.child("message").setValue(message);
-                                break;
-                            }
-                        }
+                    DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations").child(eventId).child("guests").child(userId);
+                    invitationsRef.child("message").setValue(message);
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            // Handle error
-                        }
-                    });
 
                     // Update 'events' node
-                    DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events").child(eventId).child("guests").child(guestKey);
+                    DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events").child(eventId).child("guests").child(userId);
                     eventsRef.child("message").setValue(message);
 
                     // Optionally, you can add a timestamp or any other relevant information
@@ -244,23 +230,8 @@ public class SendMessage extends AppCompatActivity {
                             // Now you can save the audioDownloadUrl to the database
                             // and associate it with the corresponding message or user.
 
-                            DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations");
-                            invitationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                        String guestKeyFromSnapshot = childSnapshot.getKey();
-                                        DatabaseReference currentGuestRef = invitationsRef.child(guestKeyFromSnapshot).child("guests").child(userId);
-                                        currentGuestRef.child("voiceMessage").setValue(audioDownloadUrl);
-                                        break;
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-                                    // Handle error
-                                }
-                            });
+                            DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations").child(eventId).child("guests").child(userId);
+                            invitationsRef.child("voiceMessage").setValue(audioDownloadUrl);
 
                             DatabaseReference eventsRef = FirebaseDatabase.getInstance().getReference().child("events").child(eventId).child("guests").child(guestKey);
                             // Update 'events' node with audio URL

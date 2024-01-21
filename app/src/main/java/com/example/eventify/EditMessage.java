@@ -196,28 +196,9 @@ public class EditMessage extends AppCompatActivity {
                                 Toast.makeText(EditMessage.this, "Failed to update text message", Toast.LENGTH_SHORT).show();
                             }
                         });
-                DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations");
                 uploadNewAudioFile(guestKey, userId, eventId);
-                invitationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                            String guestKeyFromSnapshot = childSnapshot.getKey();
-                            DatabaseReference currentGuestRef = invitationsRef.child(guestKeyFromSnapshot).child("guests").child(userId);
-                            currentGuestRef.child("message").setValue(newText);
-                            break;
-                        }
-                        Toast.makeText(EditMessage.this, "Text & Voice Text Updated successfully", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        // Handle error
-                    }
-
-                });
-
-
+                DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations").child(eventId).child("guests").child(userId);
+                invitationsRef.child("message").setValue(newText);
             }
         });
     }
@@ -275,23 +256,8 @@ public class EditMessage extends AppCompatActivity {
                             eventsRef.child("audioKey").setValue(newAudioDownloadUrl);
 
                             // Update 'invitations' node with the new audio URL
-                            DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations");
-                            invitationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                                        String guestKeyFromSnapshot = childSnapshot.getKey();
-                                        DatabaseReference currentGuestRef = invitationsRef.child(guestKeyFromSnapshot).child("guests").child(userId);
-                                        currentGuestRef.child("voiceMessage").setValue(newAudioDownloadUrl);
-                                        break;
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    // Handle error
-                                }
-                            });
+                            DatabaseReference invitationsRef = FirebaseDatabase.getInstance().getReference().child("invitations").child(eventId).child("guests").child(userId);
+                            invitationsRef.child("voiceMessage").setValue(newAudioDownloadUrl);
 
                             // Add any additional logic or error handling as needed
                         });

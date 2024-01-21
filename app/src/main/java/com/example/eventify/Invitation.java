@@ -205,11 +205,13 @@ public class Invitation extends AppCompatActivity {
             DatabaseReference eventReference = FirebaseDatabase.getInstance().getReference("events").child(eventId).child("guests");
             query = eventReference.orderByChild("eventID").equalTo(eventId);
             for (User guestUser : guestUsers) {
+                String guestUserId = guestUser.getUserId();
+
                 Map<String, Object> guestInfo = new HashMap<>();
                 guestInfo.put("userId", guestUser.getUserId());
                 guestInfo.put("username", guestUser.getUserName());
                 guestInfo.put("contact", guestUser.getContactNum());
-                eventReference.child(guestUser.getUserId()).setValue(guestInfo);
+                eventReference.child(guestUserId).setValue(guestInfo);
             }
         }
         else{
