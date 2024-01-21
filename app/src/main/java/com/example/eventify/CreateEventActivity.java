@@ -246,7 +246,7 @@ public class CreateEventActivity extends AppCompatActivity {
 
     private void uploadImageToStorage(String eventKey, Bitmap bitmap) {
         // Create a StorageReference for the image
-        StorageReference imageRef = storageReference.child("event_images").child(eventKey + ".jpg");
+        StorageReference imageRef = storageReference.child(eventKey + ".jpg");
 
         // Convert the Bitmap to a byte array
         ByteArrayOutputStream baos = new ByteArrayOutputStream();

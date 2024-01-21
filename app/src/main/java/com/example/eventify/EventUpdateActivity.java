@@ -3,15 +3,21 @@ package com.example.eventify;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TimePicker;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -24,12 +30,13 @@ import java.util.Locale;
 
 public class EventUpdateActivity extends AppCompatActivity {
 
-    private EditText etEventName, etEventDescription, etStart, etEnd;
+    private EditText etEventName, etEventDescription, etStart, etEnd,etLocation;
     private Button btnUpdate;
+    private ImageButton btnCapture;
+    private ImageView imageLocation;
     private DatabaseReference myRef;
-    private String id, eventName, eventDescription;
-
-
+    private String id, eventName, eventDescription, imageUr;
+    private static final int REQUEST_IMAGE_CAPTURE = 1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +46,20 @@ public class EventUpdateActivity extends AppCompatActivity {
         etEventDescription = findViewById(R.id.etEventDescription);
         etStart = findViewById(R.id.etStart);
         etEnd = findViewById(R.id.etEnd);
+        etLocation = findViewById(R.id.etLocation);
+        imageLocation = findViewById(R.id.imageLocation);
+        btnCapture = findViewById(R.id.btnCapture);
         btnUpdate = findViewById(R.id.btnUpdate);
+
+        btnCapture.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+                }
+            }
+        });
 
         // Get the event ID and other details from the Intent
         if (getIntent().hasExtra("EventKey")) {
@@ -90,6 +110,13 @@ public class EventUpdateActivity extends AppCompatActivity {
                         etEventDescription.setText(event.getEventDescription());
                         etStart.setText(event.getEventStart());
                         etEnd.setText(event.getEventEnd());
+                        etLocation.setText(event.getEventLocation());
+
+                        if (event.getImageUrl() != null && !event.getImageUrl().isEmpty()) {
+                            Glide.with(EventUpdateActivity.this)
+                                    .load(event.getImageUrl())
+                                    .into(imageLocation);
+                        }
                     }
                 }
             }
@@ -152,6 +179,7 @@ public class EventUpdateActivity extends AppCompatActivity {
         String updatedEventDescription = etEventDescription.getText().toString().trim();
         String updatedEventStart = etStart.getText().toString().trim();
         String updatedEventEnd = etEnd.getText().toString().trim();
+        String updatedEventLocation = etLocation.getText().toString().trim();
 
 
         if (!updatedEventName.isEmpty() && !updatedEventDescription.isEmpty() && !updatedEventStart.isEmpty() && !updatedEventEnd.isEmpty()) {
@@ -160,6 +188,7 @@ public class EventUpdateActivity extends AppCompatActivity {
             myRef.child("eventDescription").setValue(updatedEventDescription);
             myRef.child("eventStart").setValue(updatedEventStart);
             myRef.child("eventEnd").setValue(updatedEventEnd);
+            myRef.child("eventLocation").setValue(updatedEventLocation);
 
             // Redirect back to EventDetailActivity
             Intent intent = new Intent(EventUpdateActivity.this, EventListActivity.class);
