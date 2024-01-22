@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,6 +58,27 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
             }
         });
 
+        holder.feedbackBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, SendFeedback.class);
+                intent.putExtra("EventKey", eventInvitation.getEventKey());
+                intent.putExtra("User ID", eventInvitation.getUserId());
+                intent.putExtra("EventName", eventInvitation.getEventName() );
+                intent.putExtra("Username", eventInvitation.getUsername());
+                intent.putExtra("EventDescription", eventInvitation.getEventDescription());
+                intent.putExtra("EventStart",eventInvitation.getEventStart());
+                intent.putExtra("EventEnd",eventInvitation.getEventEnd());
+                intent.putExtra("EventLocation",eventInvitation.getEventLocation());
+                intent.putExtra("ImageUrl",eventInvitation.getEventLocationImg());
+                intent.putExtra("EventOrganizer",eventInvitation.getEventOrganizer());
+                intent.putExtra("TextMessage",eventInvitation.getTextMessage());
+                intent.putExtra("VoiceMessage",eventInvitation.getVoiceMessage());
+                intent.putExtra("EventType",eventInvitation.getEventType());
+                context.startActivity(intent);
+            }
+        });
+
     }
 
 
@@ -68,12 +90,14 @@ public class InvitationAdapter extends RecyclerView.Adapter<InvitationAdapter.My
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView event_name_txt ,event_organizer_txt;
         Button viewBtn;
+        ImageButton feedbackBtn;
         public View mainDisplay;
         public MyViewHolder (@NonNull View itemView) {
             super(itemView);
             event_name_txt=itemView.findViewById(R.id.EventName);
             event_organizer_txt=itemView.findViewById(R.id.EventOrganizer);
             viewBtn=itemView.findViewById(R.id.ViewBtn);
+            feedbackBtn = itemView.findViewById(R.id.btn_create_feedback);
             mainDisplay=itemView;
         }
     }
