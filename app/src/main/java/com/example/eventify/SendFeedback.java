@@ -60,7 +60,7 @@ public class SendFeedback extends AppCompatActivity {
                         String feedbackID = databaseReference.child("feedbacks").push().getKey();
 
                         // Create a Feedback object
-                        Feedback feedback = new Feedback(message, eventKey, currentUserUid);
+                        Feedback feedback = new Feedback(message, eventKey, currentUserUid, feedbackID);
 
                         // Store the feedback in the database
                         databaseReference.child("feedbacks").child(feedbackID).setValue(feedback);
