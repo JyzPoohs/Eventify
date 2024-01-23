@@ -3,6 +3,7 @@ package com.example.eventify;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -11,6 +12,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -29,6 +31,7 @@ public class FeedbackList extends AppCompatActivity {
     private DatabaseReference feedbackReference;
     private DatabaseReference eventsReference;
     private DatabaseReference usersReference;
+    private ImageView LocationImg;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,6 +57,14 @@ public class FeedbackList extends AppCompatActivity {
         feedbackList = new ArrayList<>();
         feedbackAdapter = new FeedbackAdapter(feedbackList);
         recyclerViewFeedbacks.setAdapter(feedbackAdapter);
+        LocationImg=(ImageView) findViewById(R.id.iv_feedbacklist_location);
+        String imageUrl = getIntent().getStringExtra("ImageUrl");
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            Glide.with(this)
+                    .load(imageUrl)
+                    .into(LocationImg);
+        }
+
 
         String eventKey = getIntent().getStringExtra("EventKey");
 

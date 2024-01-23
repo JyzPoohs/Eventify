@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -55,6 +56,7 @@ public class SendFeedback extends AppCompatActivity {
         TvShakeInstruction = findViewById(R.id.tv_feedback_message);
         BtnPrivate = findViewById(R.id.btn_private_feedback);
         BtnView = findViewById(R.id.btn_view_feedback);
+        EtFeedback = findViewById(R.id.editTextTextMultiLine);
 
 
         TvEvent.setText(getIntent().getStringExtra("EventName"));
@@ -103,6 +105,7 @@ public class SendFeedback extends AppCompatActivity {
                 String eventKey = getIntent().getStringExtra("EventKey");
                 Intent viewFeedbackIntent = new Intent(SendFeedback.this, FeedbackList.class);
                 viewFeedbackIntent.putExtra("EventKey", eventKey);
+                viewFeedbackIntent.putExtra("ImageUrl", getIntent().getStringExtra("ImageUrl"));
                 try {
                     startActivity(viewFeedbackIntent);
                 } catch (Exception e) {
@@ -118,6 +121,7 @@ public class SendFeedback extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String eventKey = getIntent().getStringExtra("EventKey");
+                String message = String.valueOf(EtFeedback.getText());
                 eventsReference.child(eventKey).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -132,9 +136,10 @@ public class SendFeedback extends AppCompatActivity {
                                 usersReference.child(userId).child("contact").addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot userSnapshot) {
-                                        String userName = userSnapshot.getValue(String.class);
-                                        if (userName != null) {
-                                            TvShakeInstruction.setText(userName);
+                                        String phoneNumber = userSnapshot.getValue(String.class);
+                                        if (phoneNumber != null) {
+                                            // Open SMS app with pre-populated message
+                                            composeSMS(phoneNumber, message);
                                         }
                                     }
 
@@ -161,7 +166,6 @@ public class SendFeedback extends AppCompatActivity {
 
     }
     private void sendFeedback(){
-        EtFeedback = findViewById(R.id.editTextTextMultiLine);
         FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -188,6 +192,7 @@ public class SendFeedback extends AppCompatActivity {
             // Start FeedbackListActivity
             Intent feedbackListIntent = new Intent(SendFeedback.this, FeedbackList.class);
             feedbackListIntent.putExtra("EventKey", eventKey);
+            feedbackListIntent.putExtra("ImageUrl", getIntent().getStringExtra("ImageUrl"));
 
             try {
                 startActivity(feedbackListIntent);
@@ -205,6 +210,11 @@ public class SendFeedback extends AppCompatActivity {
         if (sensorManager != null && shakeDetector != null) {
             sensorManager.unregisterListener(shakeDetector);
         }
+    }
+    private void composeSMS(String phoneNumber, String message) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.fromParts("sms", phoneNumber, null));
+        intent.putExtra("sms_body", message);
+        startActivity(intent);
     }
     private void onNavigationIconClick() {
         Intent intent = new Intent(SendFeedback.this, SideMenuActivity.class);
