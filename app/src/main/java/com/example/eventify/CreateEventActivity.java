@@ -18,6 +18,10 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
+import android.Manifest;
+import android.content.pm.PackageManager;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -30,7 +34,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class CreateEventActivity extends AppCompatActivity {
 
@@ -45,6 +51,8 @@ public class CreateEventActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
+    private static final int CAMERA_PERMISSION_REQUEST_CODE = 100;
+    private static final int LOCATION_PERMISSION_REQUEST_CODE = 101;
     private String eventType, imageUrl;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,10 +107,7 @@ public class CreateEventActivity extends AppCompatActivity {
         btnCapturePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-                }
+                requestCameraPermission(); // Request camera permission before capturing photo
             }
         });
 
@@ -264,7 +269,7 @@ public class CreateEventActivity extends AppCompatActivity {
                     storeEventImage(eventKey, uri.toString());
                 });
             } else {
-                // Handle unsuccessful upload
+                Toast.makeText(this, "Upload Failed", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -282,4 +287,32 @@ public class CreateEventActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void requestCameraPermission() {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_REQUEST_CODE);
+        } else {
+            // Camera permission is already granted, proceed with capturing photo
+            capturePhoto();
+        }
+    }
+
+    // Handle permission result
+    private void capturePhoto() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
+        }
+    }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Camera permission granted, proceed with capturing photo
+                capturePhoto();
+            } else {
+                Toast.makeText(this, "Camera permission is required to capture photos", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
 }
