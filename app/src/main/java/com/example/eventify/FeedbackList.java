@@ -1,10 +1,13 @@
 package com.example.eventify;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,6 +34,14 @@ public class FeedbackList extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feedback_list);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onNavigationIconClick();
+            }
+        });
 
         tvFeedbackListEventName = findViewById(R.id.tv_feedbacklist_eventname);
         tvFeedbackListUsername = findViewById(R.id.tv_feedbacklist_username);
@@ -123,5 +134,9 @@ public class FeedbackList extends AppCompatActivity {
                 // Handle the error
             }
         });
+    }
+    private void onNavigationIconClick() {
+        Intent intent = new Intent(FeedbackList.this, SideMenuActivity.class);
+        startActivity(intent);
     }
 }

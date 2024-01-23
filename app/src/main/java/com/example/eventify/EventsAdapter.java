@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -50,6 +51,23 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
                 context.startActivity(intent);
             }
         });
+
+        holder.BtnFeedback.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, FeedbackList.class);
+                intent.putExtra("EventKey",event.getEventKey());
+                intent.putExtra("EventName", event.getEventName());
+                intent.putExtra("Start", event.getEventStart());
+                intent.putExtra("End", event.getEventEnd());
+                intent.putExtra("EventDescription", event.getEventDescription());
+                intent.putExtra("EventLocation", event.getEventLocation());
+                intent.putExtra("ImageUrl", event.getImageUrl());
+                // Add more fields as needed
+                context.startActivity(intent);
+            }
+        });
     }
 
 
@@ -62,11 +80,13 @@ public class EventsAdapter extends RecyclerView.Adapter<EventsAdapter.MyViewHold
     public class MyViewHolder extends RecyclerView.ViewHolder{
         TextView event_name_txt;
         public View mainDisplay;
+        public Button BtnFeedback;
         public MyViewHolder (@NonNull View itemView) {
             super(itemView);
             event_name_txt=itemView.findViewById(R.id.textViewEventName);
 
             mainDisplay=itemView;
+            BtnFeedback = itemView.findViewById(R.id.viewFeedback);
         }
     }
 }
